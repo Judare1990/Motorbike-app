@@ -1,7 +1,7 @@
 const express = require('express');
 
-const repairRoute = express.Router();
 const repairController = require('../controllers/repairs.controller');
+const repairRoute = express.Router();
 
 repairRoute
   .route('/')
@@ -11,7 +11,7 @@ repairRoute
 repairRoute
   .route('/:id')
   .get(repairController.allRepairs)
-  .patch(repairController.createRepairs)
+  .patch(repairController.updateRepair)
   .delete(repairController.deleteRepair);
 
 module.exports = repairRoute;
