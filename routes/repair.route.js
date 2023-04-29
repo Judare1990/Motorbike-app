@@ -2,7 +2,14 @@ const express = require('express');
 
 const validateFields = require('../middlewares/validations.middlewares');
 const repairController = require('../controllers/repairs.controller');
+const authMiddleware = require('../middlewares/auth.middleware');
+
 const repairRoute = express.Router();
+
+repairRoute.use(
+  authMiddleware.protect,
+  authMiddleware.protectEmployeeAccount
+);
 
 repairRoute
   .route('/')
