@@ -1,4 +1,5 @@
 require('dotenv').config();
+const initModel = require('./models/initModels');
 
 const app = require('./app');
 const { db } = require('./database/config');
@@ -8,6 +9,8 @@ db.authenticate()
     console.log('database authenticated')
   )
   .catch((error) => console.log(error));
+
+initModel();
 
 db.sync()
   .then(() => console.log('database sync'))

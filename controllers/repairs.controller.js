@@ -1,10 +1,16 @@
 const Repair = require('./../models/repair.models');
+const User = require('../models/user.models');
 
 exports.allRepairs = async (req, res) => {
   const repairs = await Repair.findAll({
     where: {
       status: 'pending',
     },
+    include: [
+      {
+        model: User,
+      },
+    ],
   });
 
   res.status(200).json({

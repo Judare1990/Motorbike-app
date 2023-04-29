@@ -1,4 +1,6 @@
+const AppError = require('../utils/appError');
 const User = require('./../models/user.models');
+const catchAsync = require('../utils/catchAsync');
 
 exports.allUsers = async (req, res) => {
   const users = await User.findAll({
@@ -31,45 +33,23 @@ exports.createUsers = async (req, res) => {
     user,
   });
 };
-exports.findOneUser = async (req, res) => {
-  const { id } = req.params;
 
-  const user = await User.findOne({
-    where: {
-      id,
-      status: 'available',
-    },
-  });
-  if (!user) {
-    return res.status(404).json({
-      status: 'error',
-      message: 'the user was not found',
+exports.findOneUser = catchAsync(
+  async (req, res, next) => {
+    const { user } = req;
+
+    res.status(200).json({
+      status: 'success',
+      message:
+        'the user has been done successfully',
+      user,
     });
   }
-  res.status(200).json({
-    status: 'success',
-    message:
-      'the user has been done successfully',
-    user,
-  });
-};
+);
+
 exports.updateUser = async (req, res) => {
-  const { id } = req.params;
+  const { user } = req;
   const { name, email } = req.body;
-
-  const user = await User.findOne({
-    where: {
-      id,
-      status: 'available',
-    },
-  });
-
-  if (!user) {
-    return res.status(404).json({
-      status: 'error',
-      message: 'The user was not found',
-    });
-  }
 
   await user.update({
     name,
@@ -84,20 +64,8 @@ exports.updateUser = async (req, res) => {
 };
 
 exports.deleteUser = async (req, res) => {
-  const { id } = req.params;
-  const user = await User.findOne({
-    where: {
-      id,
-      status: 'available',
-    },
-  });
+  const { user } = req;
 
-  if (!user) {
-    return res.status(404).json({
-      status: 'error',
-      message: 'The user was not found',
-    });
-  }
   await user.update({
     status: 'disabled',
   });
